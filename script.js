@@ -1,4 +1,4 @@
-const cards = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+const cards = ['$', '%', '#', '§', '£', '?','¢','!'];
 let gameCards = [];
 let firstCard, secondCard;
 let score = 0;
@@ -31,7 +31,9 @@ function startGame() {
 }
 
 function flipCard() {
-    if (firstCard && secondCard) return;
+    if (firstCard && secondCard) return; // Não permite mais de duas cartas viradas
+    if (this === firstCard) return; // Impede clicar na mesma carta duas vezes
+
     this.classList.add('flipped');
     this.textContent = this.dataset.value;
 
@@ -49,9 +51,11 @@ function checkMatch() {
         scoreDisplay.textContent = `Pontos: ${score}`;
         resetCards();
     } else {
+        firstCard.classList.add('error');
+        secondCard.classList.add('error');
         setTimeout(() => {
-            firstCard.classList.remove('flipped');
-            secondCard.classList.remove('flipped');
+            firstCard.classList.remove('flipped', 'error');
+            secondCard.classList.remove('flipped', 'error');
             firstCard.textContent = '';
             secondCard.textContent = '';
             resetCards();
@@ -77,7 +81,7 @@ function startTimer() {
         timerDisplay.textContent = `Tempo: ${timeLeft}`;
         if (timeLeft <= 0) {
             clearInterval(timer);
-            alert('Tempo esgotado!'); // Aqui você pode implementar lógica para encerrar o jogo.
+            alert('Tempo esgotado!');
         }
     }, 1000);
 }
